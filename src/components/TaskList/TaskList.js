@@ -2,13 +2,10 @@ import React from 'react';
 import './TaskList.css';
 import Task from '../Task/Task';
 
-function TaskList({tasks}) {
+function TaskList({ tasks, onDeleteTask }) {
     let items = tasks.map((task) => {
-        const {status, ...list} = task;
         return (
-            <li className={status}>
-                <Task {...list}/>
-            </li>
+            <Task {...task} key={task.id} onDeleteTask={onDeleteTask} />
         );
     })
 
