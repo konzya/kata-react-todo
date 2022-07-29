@@ -3,43 +3,42 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import './Task.css';
 
 export default class Task extends React.Component {
-    state = {
-        completed: false
-    }
 
-    toggle = () => {
-        this.setState( ({completed}) => {
-            return {
-                completed: !completed
-            }
-        })
+    clickHandler = (e) => {
+        this.props.onEditTask(this.props.id)
+        setTimeout(() => e.target.closest('li').querySelector('.edit').focus(), 50)
+        
     }
-
+    
     render() {
 
-        let { description, created, id, onDeleteTask} = this.props;
-        let classList = '';
-        if (this.state.completed) {
-            classList += ' completed';
-        }
+        let { description,
+              created, 
+              id, 
+              completed,                
+              onDeleteTask,               
+              onCompleteTask} = this.props;
+              
         
         return (
-            <li className={classList}>
+            
                 <div className='view'>
                     <input className='toggle' 
                            type='checkbox'
-                           onChange={this.toggle}></input>
+                           checked={completed ? true : false}
+                           onChange={() => onCompleteTask(id)}></input>
 
                     <label>
                         <span className='description'>{description}</span>
                         <span className='created'>{formatDistanceToNow(created)}</span>
                     </label>
 
-                    <button className='icon icon-edit'></button>
+                    <button className='icon icon-edit'
+                            onClick={this.clickHandler}></button>
                     <button className='icon icon-destroy'
                             onClick={() => onDeleteTask(id)}></button>
                 </div>
-            </li>
+            
         );
     }
 

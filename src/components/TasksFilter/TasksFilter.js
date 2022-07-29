@@ -1,22 +1,30 @@
 import React from 'react';
 import './TasksFilter.css';
 
-function TasksFilter() {
-    return (
-        <ul className='filters'>
-            <li>
-                <button className='selected'>All</button>
-            </li>
+export default class TasksFilter extends React.Component {
+    
+    key = 0
+    
+    render() {
+        
+        const {renderOptions, renderMode, onRenderModeChange} =this.props;
+        
+        let items = renderOptions.map( (option) => {
+            return (
+                <li key={this.key++}>
+                    <button
+                        className={renderMode === option ? 'selected' : ''}
+                        onClick={() => onRenderModeChange(option)}>{option}</button>
+                </li>
+            );
+        })
 
-            <li>
-                <button>Active</button>
-            </li>
+        return (
+            <ul className='filters'>
+                {items}
+            </ul>
+        );
+    }
 
-            <li>
-                <button>Completed</button>
-            </li>
-        </ul>
-    );
 }
 
-export default TasksFilter;

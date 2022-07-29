@@ -3,12 +3,21 @@ import './Footer.css';
 
 import TasksFilter from '../TasksFilter/TasksFilter';
 
-function Footer() {
+function Footer({itemsLeft,
+                 onRenderModeChange, 
+                 renderMode,
+                 renderOptions, 
+                 onDeleteAllComplete}) {
+    
     return (
         <footer className='footer'>
-            <span className='todo-count'>1 items left</span>
-            <TasksFilter />
-            <button className='clear-completed'>Clear completed</button>
+            <span className='todo-count'>{itemsLeft} items left</span>
+            <TasksFilter 
+                onRenderModeChange={onRenderModeChange}
+                renderMode={renderMode}
+                renderOptions={renderOptions}/>
+            <button className='clear-completed'
+                    onClick={ () => onDeleteAllComplete() }>Clear completed</button>
         </footer>
     );
 }

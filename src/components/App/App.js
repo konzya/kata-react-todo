@@ -6,12 +6,33 @@ import TaskList from '../TaskList/TaskList';
 import Footer from '../Footer/Footer';
 
 export default class App extends React.Component {
+  idCounter = 0
+
   state = {
     tasks: [
-      {description: 'Completed task', created: new Date(), id: 1},
-      {description: 'Editing task', created: new Date(), id: 2},
-      {description: 'Active task', created: new Date(), id: 3},
-    ]
+      this.createTask('create app'),
+      this.createTask('make editing')
+    ],
+    renderMode: 'All',
+    renderOptions: ['All', 'Active', 'Completed']
+  }
+
+
+  createTask (description) {
+    return {
+      description,
+      created: new Date(),
+      id: this.idCounter++,
+      completed: false,
+      editing: false
+    }
+  }
+
+  toggleProperty(arr, id, propName) {
+    const i = arr.findIndex((el) => el.id === id);
+    const oldItem = arr[i];
+    const newItem = { ...oldItem, [propName]: !oldItem[propName] };
+    return [...arr.slice(0, i), newItem, ...arr.slice(i + 1)];
   }
 
   deleteTask = (id) => {
@@ -24,21 +45,79 @@ export default class App extends React.Component {
       }
     });
   }
-  
+
+  completeTask = (id) => {
+    this.setState( ({tasks}) => {      
+      return {
+        tasks : this.toggleProperty(tasks, id , 'completed')
+      }
+    })
+  }
+
+  editTask = (id, description) => {
+    const i = this.state.tasks.findIndex((el) => el.id === id);
+    const oldItem = this.state.tasks[i];
+    const newItem = { ...oldItem, 
+                      editing: !oldItem.editing,
+                      description  
+                    };
+    const newArr = [...this.state.tasks.slice(0, i), newItem, ...this.state.tasks.slice(i + 1)];
+    this.setState( ({tasks}) => {      
+      return {
+        tasks : newArr
+      }
+    })
+  }
+
+  addTask = (description) => {
+    const newItem = this.createTask(description);
+    this.setState( ({tasks}) => {
+      return {
+        tasks: [...tasks, newItem]
+      }
+    })
+  }  
+
+  setRenderMode = (mode) => {    
+    this.setState(() => {
+      return {
+        renderMode: mode
+      }
+    })
+  }
+
+  deleteAllComplete = () => {
+    this.state.tasks.forEach( (task) => {
+      if (task.completed) this.deleteTask(task.id);
+    })
+  }
+
   render() {
+    let itemsLeft = this.state.tasks.reduce( (acc, task) => {
+      if (!task.completed) acc++;
+      return acc;
+    }, 0)
     return (
-      <section className='todoapp'>
-  
+      <section className='todoapp'>  
         <header className='header'>
           <h1>todos</h1>
-          <NewTaskForm />
+          <NewTaskForm 
+            onItemAdded={this.addTask}/>
         </header>
   
         <section className='main'>
           <TaskList 
-            tasks={this.state.tasks} 
-            onDeleteTask={this.deleteTask}/>
-          <Footer />
+            tasks={this.state.tasks}
+            renderMode={this.state.renderMode}
+            onCompleteTask={this.completeTask} 
+            onDeleteTask={this.deleteTask}
+            onEditTask={this.editTask} />
+          <Footer
+            itemsLeft={itemsLeft} 
+            onRenderModeChange={this.setRenderMode}
+            onDeleteAllComplete={this.deleteAllComplete}
+            renderMode={this.state.renderMode}
+            renderOptions={this.state.renderOptions}/>
         </section>
       </section>
     );
