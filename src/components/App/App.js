@@ -14,7 +14,8 @@ export default class App extends React.Component {
       this.createTask('make editing')
     ],
     renderMode: 'All',
-    renderOptions: ['All', 'Active', 'Completed']
+    renderOptions: ['All', 'Active', 'Completed'],
+    newTaskFormText: ''
   }
 
 
@@ -62,7 +63,7 @@ export default class App extends React.Component {
                       description  
                     };
     const newArr = [...this.state.tasks.slice(0, i), newItem, ...this.state.tasks.slice(i + 1)];
-    this.setState( ({tasks}) => {      
+    this.setState( () => {      
       return {
         tasks : newArr
       }
@@ -73,7 +74,8 @@ export default class App extends React.Component {
     const newItem = this.createTask(description);
     this.setState( ({tasks}) => {
       return {
-        tasks: [...tasks, newItem]
+        tasks: [...tasks, newItem],
+        newTaskFormText: ''
       }
     })
   }  
@@ -92,6 +94,12 @@ export default class App extends React.Component {
     })
   }
 
+  newTaskChangeHandler = (e) => {
+    this.setState({
+      newTaskFormText: e.target.value
+  });
+  }
+
   render() {
     let itemsLeft = this.state.tasks.reduce( (acc, task) => {
       if (!task.completed) acc++;
@@ -101,7 +109,9 @@ export default class App extends React.Component {
       <section className='todoapp'>  
         <header className='header'>
           <h1>todos</h1>
-          <NewTaskForm 
+          <NewTaskForm
+            value={this.state.newTaskFormText}
+            newTaskChangeHandler={this.newTaskChangeHandler} 
             onItemAdded={this.addTask}/>
         </header>
   

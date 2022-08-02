@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import './TasksFilter.css';
+
 
 export default class TasksFilter extends React.Component {
     
@@ -25,6 +27,15 @@ export default class TasksFilter extends React.Component {
             </ul>
         );
     }
-
 }
 
+TasksFilter.propsTypes = {
+    renderMode: PropTypes.oneOf(['All', 'Active', 'Completed']),
+    renderOptions: PropTypes.arrayOf(PropTypes.string),
+    onRenderModeChange: PropTypes.func.isRequired
+}
+
+TasksFilter.defaultProps = {
+    renderMode: 'All',
+    renderOptions: ['All', 'Active', 'Completed']
+}

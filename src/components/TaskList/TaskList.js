@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import './TaskList.css';
 import Task from '../Task/Task';
 import EditTask from '../EditTask/EditTask';
@@ -20,8 +21,8 @@ function TaskList({ tasks, renderMode, onDeleteTask, onCompleteTask, onEditTask 
                 break;
             case 'Completed':
                 if (!task.completed) willRender = false;
-                break;
-            default:                
+                break;            
+            default:
         }
 
         if (willRender) {
@@ -51,3 +52,21 @@ function TaskList({ tasks, renderMode, onDeleteTask, onCompleteTask, onEditTask 
 }
 
 export default TaskList;
+
+TaskList.propTypes = {
+    tasks: PropTypes.arrayOf(PropTypes.shape({
+        description: PropTypes.string.isRequired,
+        created: PropTypes.instanceOf(Date).isRequired,
+        id: PropTypes.number.isRequired,
+        completed: PropTypes.bool.isRequired,
+        editing: PropTypes.bool.isRequired
+    })),
+    renderMode: PropTypes.oneOf(['All', 'Active', 'Completed']),
+    onCompleteTask: PropTypes.func.isRequired,
+    onDeleteTask: PropTypes.func.isRequired,
+    onEditTask: PropTypes.func.isRequired
+}
+
+TaskList.defaultProps = {
+    renderMode: 'All'
+}

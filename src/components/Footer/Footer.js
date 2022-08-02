@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import './Footer.css';
 
 import TasksFilter from '../TasksFilter/TasksFilter';
@@ -23,3 +24,16 @@ function Footer({itemsLeft,
 }
 
 export default Footer;
+
+Footer.propTypes = {
+    itemsLeft: PropTypes.number.isRequired,
+    renderMode: PropTypes.oneOf(['All', 'Active', 'Completed']),
+    renderOptions: PropTypes.arrayOf(PropTypes.string),
+    onRenderModeChange: PropTypes.func.isRequired,
+    onDeleteAllComplete: PropTypes.func.isRequired
+}
+
+Footer.defaultProps = {
+    renderMode: 'All',
+    renderOptions: ['All', 'Active', 'Completed']
+}

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types'
 import './EditTask.css';
 
 export default class EditTask extends React.Component {
@@ -27,14 +28,14 @@ export default class EditTask extends React.Component {
         }
     }
 
-    blurHandler = (e) => {
+    blurHandler = () => {
         if (this.canBlur) {
             this.props.onEditTask(this.props.id, this.state.value);
         }
         
     }
 
-    render() {        
+    render() {               
         return (            
             <input
                 type='text'
@@ -45,4 +46,10 @@ export default class EditTask extends React.Component {
                 className="edit"></input>
         );
     }
+}
+
+EditTask.propTypes = {
+    description: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    onEditTask: PropTypes.func.isRequired
 }
