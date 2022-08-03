@@ -1,1 +1,1 @@
-https://konzya.github.io/kata-react-todo/
+https://kata-react-todo-konzya.vercel.app/
