@@ -1,35 +1,35 @@
-import React from 'react';
+import React from 'react'
 import PropTypes from 'prop-types'
-import './NewTaskForm.css';
+import './NewTaskForm.css'
 
-export default class NewTaskForm extends React.Component {   
-
-    onEnterPress = (e) => {
-        if (e.keyCode === 13) {
-            this.props.onItemAdded(this.props.value)            
-        }
+export default class NewTaskForm extends React.Component {
+  onEnterPress = (e) => {
+    const { onItemAdded, value } = this.props
+    if (e.keyCode === 13) {
+      onItemAdded(value)
     }
+  }
 
-    render() {         
-        return (
-            <input className='new-todo' 
-                   placeholder='What needs to be done?'
-                   value={this.props.value}
-                   autoFocus                   
-                   onChange={this.props.newTaskChangeHandler}
-                   onKeyDown={this.onEnterPress}></input>
-        );
-    }    
+  render() {
+    const { value, newTaskChangeHandler } = this.props
+    return (
+      <input
+        className="new-todo"
+        placeholder="What needs to be done?"
+        value={value}
+        onChange={newTaskChangeHandler}
+        onKeyDown={this.onEnterPress}
+      />
+    )
+  }
 }
 
-NewTaskForm.propTypes ={
-    value: PropTypes.string,
-    newTaskChangeHandler: PropTypes.func.isRequired,
-    onItemAdded: PropTypes.func.isRequired
+NewTaskForm.propTypes = {
+  value: PropTypes.string,
+  newTaskChangeHandler: PropTypes.func.isRequired,
+  onItemAdded: PropTypes.func.isRequired,
 }
 
 NewTaskForm.defaultProps = {
-    value: ''
+  value: '',
 }
-
- 

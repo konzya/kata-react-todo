@@ -1,41 +1,36 @@
-import React from 'react';
+import React from 'react'
 import PropTypes from 'prop-types'
-import './TasksFilter.css';
-
+import './TasksFilter.css'
 
 export default class TasksFilter extends React.Component {
-    
-    key = 0
-    
-    render() {
-        
-        const {renderOptions, renderMode, onRenderModeChange} =this.props;
-        
-        let items = renderOptions.map( (option) => {
-            return (
-                <li key={this.key++}>
-                    <button
-                        className={renderMode === option ? 'selected' : ''}
-                        onClick={() => onRenderModeChange(option)}>{option}</button>
-                </li>
-            );
-        })
+  key = 0
 
-        return (
-            <ul className='filters'>
-                {items}
-            </ul>
-        );
-    }
+  render() {
+    const { renderOptions, renderMode, onRenderModeChange } = this.props
+
+    const items = renderOptions.map((option) => (
+      <li key={this.key++}>
+        <button
+          className={renderMode === option ? 'selected' : ''}
+          onClick={() => onRenderModeChange(option)}
+          type="button"
+        >
+          {option}
+        </button>
+      </li>
+    ))
+
+    return <ul className="filters">{items}</ul>
+  }
 }
 
 TasksFilter.propsTypes = {
-    renderMode: PropTypes.oneOf(['All', 'Active', 'Completed']),
-    renderOptions: PropTypes.arrayOf(PropTypes.string),
-    onRenderModeChange: PropTypes.func.isRequired
+  renderMode: PropTypes.oneOf(['All', 'Active', 'Completed']),
+  renderOptions: PropTypes.arrayOf(PropTypes.string),
+  onRenderModeChange: PropTypes.func.isRequired,
 }
 
 TasksFilter.defaultProps = {
-    renderMode: 'All',
-    renderOptions: ['All', 'Active', 'Completed']
+  renderMode: 'All',
+  renderOptions: ['All', 'Active', 'Completed'],
 }
