@@ -59,7 +59,7 @@ export default class Task extends React.Component {
           <span className="description">
             <button className="icon icon-play" type="button" onClick={this.startTimer} />
             <button className="icon icon-pause" type="button" onClick={this.stopTimer} />
-            {timer ? formatSecondsForTimer(timer) : "time's up"}
+            {timer ? formatSecondsForTimer(timer) : 'time is up'}
           </span>
           <span className="description">{`created ${formatDistanceToNow(created)} ago`}</span>
         </label>
