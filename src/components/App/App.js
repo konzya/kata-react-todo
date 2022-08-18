@@ -16,10 +16,12 @@ export default class App extends React.Component {
   idCounter = 0
 
   state = {
-    tasks: [this.createTask('create app'), this.createTask('make editing')],
+    tasks: [this.createTask('create app', 2), this.createTask('make editing', 50)],
     renderMode: 'All',
     renderOptions: ['All', 'Active', 'Completed'],
     newTaskFormText: '',
+    newTaskFormMin: '',
+    newTaskFormSec: '',
   }
 
   deleteTask = (id) => {
@@ -50,11 +52,14 @@ export default class App extends React.Component {
     }))
   }
 
-  addTask = (description) => {
-    const newItem = this.createTask(description)
+  addTask = () => {
+    const { newTaskFormText, newTaskFormMin, newTaskFormSec } = this.state
+    const newItem = this.createTask(newTaskFormText, Number(newTaskFormMin) * 60 + Number(newTaskFormSec))
     this.setState(({ tasks }) => ({
       tasks: [...tasks, newItem],
       newTaskFormText: '',
+      newTaskFormMin: '',
+      newTaskFormSec: '',
     }))
   }
 
@@ -77,18 +82,42 @@ export default class App extends React.Component {
     })
   }
 
-  createTask(description) {
+  newTaskMinChangeHandler = (e) => {
+    this.setState({
+      newTaskFormMin: e.target.value,
+    })
+  }
+
+  newTaskSecChangeHandler = (e) => {
+    this.setState({
+      newTaskFormSec: e.target.value,
+    })
+  }
+
+  timerTick = (taskId) => {
+    this.setState((state) => {
+      const { tasks } = state
+      const i = tasks.findIndex((el) => el.id === taskId)
+      const oldItem = tasks[i]
+      const newItem = { ...oldItem, timer: oldItem.timer - 1 }
+      const newArr = [...tasks.slice(0, i), newItem, ...tasks.slice(i + 1)]
+      return { tasks: newArr }
+    })
+  }
+
+  createTask(description, sec) {
     return {
       description,
       created: new Date(),
       id: this.idCounter++,
       completed: false,
       editing: false,
+      timer: sec,
     }
   }
 
   render() {
-    const { tasks, newTaskFormText, renderMode, renderOptions } = this.state
+    const { tasks, newTaskFormText, newTaskFormMin, newTaskFormSec, renderMode, renderOptions } = this.state
     const itemsLeft = tasks.reduce((acc, task) => {
       if (!task.completed) acc++
       return acc
@@ -98,8 +127,12 @@ export default class App extends React.Component {
         <header className="header">
           <h1>todos</h1>
           <NewTaskForm
-            value={newTaskFormText}
+            task={newTaskFormText}
+            min={newTaskFormMin}
+            sec={newTaskFormSec}
             newTaskChangeHandler={this.newTaskChangeHandler}
+            newTaskMinChangeHandler={this.newTaskMinChangeHandler}
+            newTaskSecChangeHandler={this.newTaskSecChangeHandler}
             onItemAdded={this.addTask}
           />
         </header>
@@ -107,6 +140,7 @@ export default class App extends React.Component {
         <section className="main">
           <TaskList
             tasks={tasks}
+            timerTick={this.timerTick}
             renderMode={renderMode}
             onCompleteTask={this.completeTask}
             onDeleteTask={this.deleteTask}

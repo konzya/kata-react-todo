@@ -5,10 +5,10 @@ import './TaskList.css'
 import Task from '../Task/Task'
 import EditTask from '../EditTask/EditTask'
 
-function TaskList({ tasks, renderMode, onDeleteTask, onCompleteTask, onEditTask }) {
+function TaskList({ tasks, timerTick, renderMode, onDeleteTask, onCompleteTask, onEditTask }) {
   const items = tasks.reduce((acc, task) => {
     let classList = ''
-    const { description, created, id, editing, completed } = task
+    const { description, created, id, editing, completed, timer } = task
     let willRender = true
     if (task.completed) {
       classList += ' completed'
@@ -37,9 +37,11 @@ function TaskList({ tasks, renderMode, onDeleteTask, onCompleteTask, onEditTask 
             id={id}
             editing={editing}
             completed={completed}
+            timer={timer}
             onDeleteTask={onDeleteTask}
             onCompleteTask={onCompleteTask}
             onEditTask={onEditTask}
+            timerTick={timerTick}
           />
         </li>
       )
