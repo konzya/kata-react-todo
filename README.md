@@ -1,1 +1,1 @@
-https://kata-react-todo-git-timer-konzya.vercel.app/
+https://kata-react-todo-git-hooks-konzya.vercel.app/
