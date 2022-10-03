@@ -5,7 +5,9 @@ import './TaskList.css'
 import Task from '../Task/Task'
 import EditTask from '../EditTask/EditTask'
 
-function TaskList({ tasks, timerTick, renderMode, onDeleteTask, onCompleteTask, onEditTask }) {
+function TaskList(props) {
+  const { tasks, timerTick, renderMode, onDeleteTask, onCompleteTask, onEditTask } = props
+
   const items = tasks.reduce((acc, task) => {
     let classList = ''
     const { description, created, id, editing, completed, timer } = task

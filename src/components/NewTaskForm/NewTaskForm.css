@@ -1,0 +1,32 @@
+.new-todo-form__timer:invalid {
+  background-color: rgb(255, 59, 59);
+}
+
+.new-todo-form__timer:invalid:placeholder-shown {
+  background-color: white;
+}
+
+.text-input-wrapper {
+  position: relative;
+  display: flex;  
+  z-index: 100;
+}
+
+.number-input-wrapper {
+  position: relative;
+  display: flex;
+  width: 20%;
+  z-index: 100;
+}
+
+.new-todo-form__error {  
+  box-sizing: border-box;
+  position: absolute;
+  padding: 10px;
+  min-width: 100%;
+  top: 100%;  
+  left: 50%;
+  transform: translate(-50%);
+  background-color: rgb(255, 59, 59);
+  border: 2px black solid;
+}

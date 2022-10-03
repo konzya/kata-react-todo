@@ -4,7 +4,8 @@ import './Footer.css'
 
 import TasksFilter from '../TasksFilter/TasksFilter'
 
-function Footer({ itemsLeft, onRenderModeChange, renderMode, renderOptions, onDeleteAllComplete }) {
+function Footer(props) {
+  const { itemsLeft, onRenderModeChange, renderMode, renderOptions, onDeleteAllComplete } = props
   return (
     <footer className="footer">
       <span className="todo-count">{`${itemsLeft} items left`}</span>

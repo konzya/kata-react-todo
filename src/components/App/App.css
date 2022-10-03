@@ -69,11 +69,11 @@
 }
 
 .new-todo {
-	width: 70%;
+	width: 100%;
 }
 
 .new-todo-form .new-todo-form__timer {
-	width: 20%;
+	width: 100%;
 	padding-left: 16px;
 }
 

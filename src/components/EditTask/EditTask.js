@@ -1,60 +1,46 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import './EditTask.css'
 
-export default class EditTask extends React.Component {
-  canBlur = true
+export default function EditTask(props) {
+  const { description, onEditTask, id } = props
+  const [canBlur, setCanBlur] = useState(true)
+  const [value, setValue] = useState(description)
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      value: props.description,
-    }
+  const preventBlur = () => {
+    setCanBlur(false)
+    setTimeout(() => setCanBlur(true), 0)
   }
 
-  preventBlur = () => {
-    this.canBlur = false
-    setTimeout(() => {
-      this.canBlur = true
-    }, 10)
-  }
+  const changeHandler = (e) => setValue(e.target.value)
 
-  changeHandler = (e) => {
-    this.setState({
-      value: e.target.value,
-    })
-  }
-
-  onEnterPress = (e) => {
-    const { onEditTask, id } = this.props
-    const { value } = this.state
+  const onKeyDownHandler = (e) => {
     if (e.keyCode === 13) {
-      this.preventBlur()
+      preventBlur()
+      onEditTask(id, value)
+    }
+    if (e.keyCode === 27) {
+      setValue(description)
+      setTimeout(() => e.target.blur(), 0)
+    }
+  }
+
+  const blurHandler = () => {
+    if (canBlur) {
       onEditTask(id, value)
     }
   }
 
-  blurHandler = () => {
-    const { onEditTask, id } = this.props
-    const { value } = this.state
-    if (this.canBlur) {
-      onEditTask(id, value)
-    }
-  }
-
-  render() {
-    const { value } = this.state
-    return (
-      <input
-        type="text"
-        value={value}
-        onChange={this.changeHandler}
-        onKeyDown={this.onEnterPress}
-        onBlur={this.blurHandler}
-        className="edit"
-      />
-    )
-  }
+  return (
+    <input
+      type="text"
+      value={value}
+      onChange={changeHandler}
+      onKeyDown={onKeyDownHandler}
+      onBlur={blurHandler}
+      className="edit"
+    />
+  )
 }
 
 EditTask.propTypes = {
